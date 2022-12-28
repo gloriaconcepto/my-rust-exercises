@@ -10,6 +10,9 @@ fn main() {
     // ...produces the equivalent of
     //
     //     vec!["apple".to_string(), "banana".to_string()]
+  let mut s1= String::from("abc");
+  do_stuff(&mut s1);
+  println!("{}",s1);
     let args: Vec<String> = std::env::args().skip(1).collect();
 
     // This consumes the `args` vector to iterate through each String
@@ -39,7 +42,7 @@ fn sum() {
     // 2. Use a "for loop" to iterate through integers from 7 to 23 *inclusive* using a range
     // and add them all together (increment the `sum` variable).  Hint: You should get 255
     // Run it with `cargo run sum`
- for x in 7..23{
+ for x in 7..=23{
     sum +=x;
  }
 
@@ -59,7 +62,10 @@ fn double() {
 
     println!("You can double x {} times until x is larger than 500", count);
 }
-
+fn do_stuff(s: &mut String){
+    s.insert_str(0, "Hi, ");
+    println!(" do stuff{}",s);
+}
 fn count(arg: String) {
     // Challenge: Use an unconditional loop (`loop`) to print `arg` 8 times, and then break.
     // You will need to count your loops, somehow.  Run it with `cargo run bananas`
