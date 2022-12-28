@@ -1,84 +1,76 @@
 // Silence some warnings so they don't distract from the exercise.
-#![allow(dead_code, unused_mut, unused_variables)]
+#![allow(unused_mut, unused_variables)]
+
+// use std::{sync::WaitTimeoutResult, arch::aarch64::ST};
 
 fn main() {
-    // This collects any command-line arguments into a vector of Strings.
-    // For example:
-    //
-    //     cargo run apple banana
-    //
-    // ...produces the equivalent of
-    //
-    //     vec!["apple".to_string(), "banana".to_string()]
-  let mut s1= String::from("abc");
-  do_stuff(&mut s1);
-  println!("{}",s1);
-    let args: Vec<String> = std::env::args().skip(1).collect();
+    // This fancy stuff either gets the first argument as a String, or prints
+    // usage and exits if an argument was not supplied to the program.
+    let mut arg: String = std::env::args().nth(1).unwrap_or_else(|| {
+        println!("Please supply an argument to this program.");
+        std::process::exit(-1);
+    });
 
-    // This consumes the `args` vector to iterate through each String
-    for arg in args {
-        println!("arg {}", arg);
-        // 1a. Your task: handle the command-line arguments!
-        //
-        // - If arg is "sum", then call the sum() function
-        if arg=="sum"{
-            sum();
-        }else if arg=="double" {
-            double();
-        }else{
-            count(arg);
-        }
-        // - If arg is "double", then call the double() function
-        // - If arg is anything else, then call the count() function, passing "arg" to it.
+    // 1. Write a function `inspect` that takes a reference to a String, returns nothing, but
+    // prints whether the contents of the String is plural or singular. Then uncomment and run this
+    // code with `cargo run apple` and `cargo run apples'.  Hint: use `.ends_with("s")` on the
+    // String reference
+    //
+    inspect(&arg);
 
+    // 2. Write a function `change` that takes a *mutable* reference to a String and adds an "s" to
+    // the String if it doesn't already end with "s". Then uncomment and run the code below with
+    // `cargo run apple`.  Hint: use `.push_str("s")` on the mutable String reference to add an "s".
+    //
+    change(&mut arg);
+    //println!("I have many {}", arg);
 
-        // 1b. Now try passing "sum", "double" and "bananas" to the program by adding your argument
-        // after "cargo run".  For example "cargo run sum"
+    // 3. Write a function `eat` that accepts ownership of (consumes) a String and returns a bool
+    // indicating whether or not the String both starts with a "b" AND contains an "a".
+    // Hint 1: use `.starts_with("b")` and `.contains("a")`
+    // Hint 2: `&&` is the boolean "AND" operator
+    //
+    if eat(arg) {
+       println!("Might be bananas");
+    } else {
+       println!("Not bananas");
     }
-}
 
-fn sum() {
-    let mut sum = 0;
-    // 2. Use a "for loop" to iterate through integers from 7 to 23 *inclusive* using a range
-    // and add them all together (increment the `sum` variable).  Hint: You should get 255
-    // Run it with `cargo run sum`
- for x in 7..=23{
-    sum +=x;
- }
+    // Try running this program with "boat", "banana", and "grapes" as the arguments :-)
 
-    println!("The sum is {}", sum);
-}
-
-fn double() {
-    let mut count = 0;
-    let mut x = 1;
-    // 3. Use a "while loop" to count how many times you can double the value of `x` (multiply `x`
-    // by 2) until `x` is larger than 500.  Increment `count` each time through the loop. Run it
-    // with `cargo run double`  Hint: The answer is 9 times.
- while x<500{
-    x *=2;
-    count +=1;
- }
-
-    println!("You can double x {} times until x is larger than 500", count);
-}
-fn do_stuff(s: &mut String){
-    s.insert_str(0, "Hi, ");
-    println!(" do stuff{}",s);
-}
-fn count(arg: String) {
-    // Challenge: Use an unconditional loop (`loop`) to print `arg` 8 times, and then break.
-    // You will need to count your loops, somehow.  Run it with `cargo run bananas`
+    // Challenge: Write a function "bedazzle" that takes a mutable reference to a String and
+    // ignores what is in the string and replaces the contents of the string with the String
+    // "sparkly". Then uncomment the code below.
     //
-    // print!("{} ", arg); // Execute this line 8 times, and then break. `print!` doesn't add a newline.
-   let mut count:i32=0;
-    loop{
-        print!("{} ", arg);
-        count+=1;
-        if count==8{
-            break;
-        }
-   }
+    // Hint: You will need to dereference the mutable reference in order to assign it a
+    // new value.
+    //
+    let mut material = "mud".to_string();
+    println!("This material is just `{}`.", material);
+    bedazzle(&mut material);
+    println!("Wow! Now the material is `{}`!", material);
+}
+fn inspect(word: &String){
 
-    println!(); // This will output just a newline at the end for cleanliness.
+println!("{}",word.ends_with('s'));
+if word.ends_with('s'){
+    println!("this arg {} is a plural word",word);
+}else{
+    println!("this arg {} is not a plural word",word);
+}
+}
+
+fn change(word:&mut String){
+    if ! word.ends_with('s'){
+      word.push_str("s");
+    }
+    println!("I have many {}",word);
+}
+
+fn eat(word:String)->bool{
+  return word.starts_with("b") && word.contains("a");
+}
+
+fn bedazzle(word:&mut String){
+   *word =String::from("sparkly") ;
 }
