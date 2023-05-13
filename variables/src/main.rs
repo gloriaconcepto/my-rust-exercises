@@ -4,10 +4,13 @@ use cars::{Car, Vechicles};
 use shape::Shape;
 use std::io;
 
+use crate::difference_sqr::{compu_sqr_sum, sqr_sum_total, multiple_0f_five_or_three};
+
 mod basics;
 mod structs;
 mod cars;
 mod shape;
+mod difference_sqr;
 fn main() {
   //basics()
 let squ_one=Square{width:2,height:4};
@@ -32,5 +35,20 @@ let  new_top_speed:u32=900;
 // println!("car mpg {}",car.mpg);
 let triangle=Shape::triangle;
 // println!("triangle {}",triangle.corners())
+println!("Please a vlaid input number");
+   let mut input_num=String::new();
+   io::stdin().read_line(&mut input_num).expect("Failed to read input");
+   let number:u32=input_num.trim().parse().expect("invalid input");
+   let sqr_num=compu_sqr_sum(number
+  );
+ let sqr_num_2=sqr_sum_total(number);
+  println!("{} {}",sqr_num,sqr_num_2);
+
+let answer=sqr_num_2-sqr_num;
+
+
+let multiple=multiple_0f_five_or_three(number
+);
+println!("the answer is {}",multiple);
 
 }
